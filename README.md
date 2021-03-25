@@ -9,21 +9,29 @@ Please use this template to create your own repository of this test and share yo
 # Linux
 * What is the command to list the contents of a direcory, line by line and ordered by size ascending in human readable format?
 >Answer:
+```
 ls -laSrh my_directory/
+```
 
 * How would you add a DNS server to a network interface in Linux?
 >Answer:
+```
 Add the DNS server to the /etc/resolv.conf The entry will look like this: 
 nameserver 192.168.2.254
+```
 
-* If the DNS server you've just added is not reachable, how can you get any particular hostname to resolve locally?\n 
+* If the DNS server you've just added is not reachable, how can you get any particular hostname to resolve locally? 
 >Answer:
+```
 You have to specify the order of resolving names. The following hosts entry in /etc/nsswitch.conf will first check /etc/hosts: 
 hosts: files dns
+```
 
 * How would you check for SELinux related errors?
 >Answer:
+```
 You can check the SELinux Audit log, usually at path /var/log/audit/audit.log You can also use setroubleshoot package to give more meaning to the log
+```
 
 * Write the commands to add 30GB disk space to a logical volume named "docker" that belongs to a logical group named "docker-group".
 >Answer:
@@ -46,9 +54,9 @@ v) Mount the filesystem:
     * Add a line at the beginning of the directories.list file that reads "line one's line".
     * Output the first three lines of directories.list on the console.
     * Accept an integer parameter when executed and repeat the previous question's output x amount of times based on the parameter provided at execution.
-	
+
 >Answer:
-Please see the script
+Please see the listit.sh file in the root
 
 * Commit and push your changes.
 
@@ -69,20 +77,70 @@ Please see the script
     * Insert an entry with ID "50" and Name "BATMOBILE".
 * Create an encrypted file called "secret" in the root of this repository that contains the root password of the database (the password must be "thisisadatabasepassword123456789!").
 * Change your Bash script to start the conainer using the root password from the "secret" file.
+  
+>Answer:
+Please see the Dockerfile, FLY.sh, secret.gpg in root
+
 * Commit and push your changes.
+
+
 
 # OpenShift / OKD
 For the questions below, please make use of the OpenShift CLI (oc) where applicable.
 * Write the command used to login to a remote OpenShift cluster.
+>Answer:
+```
+oc login ${OPENSHFIT_HOST} --insecure-skip-tls-verify --username ${OPENSHIFT_USER} --password ${OPENSHIFT_PASSWORD}
+```
+
 * Write the command to add the "cluster-admin" cluster role to a user called "clark".
+>Answer:
+```
+oc adm policy add-cluster-role-to-user cluster-admin clark  
+```
+
 * Write the command used to list all pods in the "smallville" project (namespace).
+>Answer:
+```
+oc project smallville
+oc get pods
+```
+
 * Write the command to scale an application (deployment config) called "dailyplanet" to 2 pods.
+>Answer:
+```
+oc scale dc dailyplanet --replicas=2
+```
+
 * Write the command to gain remote shell access to a pod called "lex" in the "smallville" project (namespace).
+>Answer:
+```
+oc project smallville
+oc rsh lex
+```
+
 * Write the command to export a secret called "loislane" in JSon format, the secret is in the "dailyplanet" project (namespace).
+>Answer:
+```
+oc project dailyplanet
+oc export -o json secret loislane > loislane.json
+```
+
 * Add a file called "Krypton" (in YAML format) to this repo that contains the resource defintion for a Persistent Volume Claim with the following properties:
     * Points to a Persistent Volume called "zod".
     * Requests 5GB of storage.
     * The volume can be mounted as read-write by more than one node.
+>Answer:
+Please see Krypton.yml in root
+
+
 # General
 * How would you ensure any change made to this Dockerfile is source controlled, approved, tested and deployed. Explain which tools you will use as if this was going into a production environment.
+>Answer:
+I will use git to create a repo containing the will contain the Dockerfile which will be controlled and versioned. Within the repo another branch, namely development, will be created from the master branch.
+In order to ensure that any changes are approved and tested and to ensure continues integration and deployemnt, Jenkins will be used. A multibranch pipeline will be created to build automatically as soon as and changes are committed to the branches.
+In Jenkins the development branch pipeline files will be checked out, the dev docker image will be build and the container will be created. If anything is wrong with the container it will not start and that will be the first failure point to check. If the containers run, unit tests and integration tests will be executed to ensure code quality. If these stages passed the docker images will be pushed to the dev Openshift cluster where the database service will be made available via a route/end point.
+In Jenkins the master branch pipeline files from the development branch will be merged into the master branch by using git rebase. The production docker image will be built and will be pushed to the production Openshift cluster where the database service will be made available via a route/end point.
+
+
 * Commit and push your changes.
