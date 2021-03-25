@@ -137,10 +137,10 @@ Please see Krypton.yml file in root
 # General
 * How would you ensure any change made to this Dockerfile is source controlled, approved, tested and deployed. Explain which tools you will use as if this was going into a production environment.
 >Answer:
-I will use git to create a repo containing the will contain the Dockerfile which will be controlled and versioned. Within the repo another branch, namely development, will be created from the master branch.
-In order to ensure that any changes are approved and tested and to ensure continues integration and deployemnt, Jenkins will be used. A multibranch pipeline will be created to build automatically as soon as and changes are committed to the branches.
-In Jenkins the development branch pipeline files will be checked out, the dev docker image will be build and the container will be created. If anything is wrong with the container it will not start and that will be the first failure point to check. If the containers run, unit tests and integration tests will be executed to ensure code quality. If these stages passed the docker images will be pushed to the dev Openshift cluster where the database service will be made available via a route/end point.
-In Jenkins the master branch pipeline files from the development branch will be merged into the master branch by using git rebase. The production docker image will be built and will be pushed to the production Openshift cluster where the database service will be made available via a route/end point.
+I will use git to create a repo containing the Dockerfile which will be controlled and versioned. Within the repo another branch, namely development, will be created from the master branch.
+In order to ensure that any changes are approved and tested and to ensure continues integration and deployemnt, Jenkins will be used. A multibranch pipeline will be created to build automatically as soon as changes are committed to the branches.
+In the Jenkins development pipeline the git development branch files will be checked out, the development docker image will be build and the container will be created. If anything is wrong with the container it will not start and that will be the first failure point to check. If the containers run, unit tests and integration tests will be executed to ensure code quality. If these stages pass the docker images will be pushed to the development Openshift cluster where the database service will be made available via a route/end point.
+In the Jenkins production pipeline the development branch files will be merged into the master branch by using git rebase. The production docker image will be built and will be pushed to the production Openshift cluster where the database service will be made available via a route/end point.
 
 
 * Commit and push your changes.
