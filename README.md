@@ -8,15 +8,48 @@ Please use this template to create your own repository of this test and share yo
 
 # Linux
 * What is the command to list the contents of a direcory, line by line and ordered by size ascending in human readable format?
+>Answer:
+ls -laSrh my_directory/
+
 * How would you add a DNS server to a network interface in Linux?
-* If the DNS server you've just added is not reachable, how can you get any particular hostname to resolve locally? 
+>Answer:
+Add the DNS server to the /etc/resolv.conf The entry will look like this: 
+nameserver 192.168.2.254
+
+* If the DNS server you've just added is not reachable, how can you get any particular hostname to resolve locally?\n 
+>Answer:
+You have to specify the order of resolving names. The following hosts entry in /etc/nsswitch.conf will first check /etc/hosts: 
+hosts: files dns
+
 * How would you check for SELinux related errors?
+>Answer:
+You can check the SELinux Audit log, usually at path /var/log/audit/audit.log You can also use setroubleshoot package to give more meaning to the log
+
 * Write the commands to add 30GB disk space to a logical volume named "docker" that belongs to a logical group named "docker-group".
+>Answer:
+```
+Assumptions-> The physical volume is /dev/hdd, the common filesystem is ext4 and is extended to volume group docker-group	
+i)  Create logical volume: 
+    lvcreate -L +30G --name docker docker-group
+ii) Create filesystem. This is required since the logical volume doesn''t create the filesystem: 
+    mkfs -t ext4 /dev/docker-group/docker
+iii) Add a filesystem label named "docker". Makes it easy to identify the filesystem with regards to a crash or disk problems:
+	 e2label /dev/docker-group/docker docker
+iv) Add it to the Linux /etc/fstab file:
+	/dev/docker-group/docker   /mnt/docker                       ext4     defaults        0 0
+v) Mount the filesystem:
+	sudo mount /dev/docker-group/docker /mnt/docker
+```
+
 * In the root of this repository, create a Bash script called "listit.sh", when executed, this script must do the following (in order):
     * Create a file called directories.list that contains the directory names only of the current directory.
     * Add a line at the beginning of the directories.list file that reads "line one's line".
     * Output the first three lines of directories.list on the console.
     * Accept an integer parameter when executed and repeat the previous question's output x amount of times based on the parameter provided at execution.
+	
+>Answer:
+Please see the script
+
 * Commit and push your changes.
 
 # Docker
