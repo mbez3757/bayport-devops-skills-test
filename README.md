@@ -56,7 +56,7 @@ v) Mount the filesystem:
     * Accept an integer parameter when executed and repeat the previous question's output x amount of times based on the parameter provided at execution.
 
 >Answer:
-Please see the listit.sh file in the root
+Please see the listit.sh file in root
 
 * Commit and push your changes.
 
@@ -79,7 +79,7 @@ Please see the listit.sh file in the root
 * Change your Bash script to start the conainer using the root password from the "secret" file.
   
 >Answer:
-Please see the Dockerfile, FLY.sh, secret.gpg in root
+Please see the Dockerfile, FLY.sh, secret.gpg files in root
 
 * Commit and push your changes.
 
@@ -90,7 +90,7 @@ For the questions below, please make use of the OpenShift CLI (oc) where applica
 * Write the command used to login to a remote OpenShift cluster.
 >Answer:
 ```
-oc login ${OPENSHFIT_HOST} --insecure-skip-tls-verify --username ${OPENSHIFT_USER} --password ${OPENSHIFT_PASSWORD}
+oc login <host> --insecure-skip-tls-verify --username <user> --password <password>
 ```
 
 * Write the command to add the "cluster-admin" cluster role to a user called "clark".
@@ -123,7 +123,7 @@ oc rsh lex
 >Answer:
 ```
 oc project dailyplanet
-oc export -o json secret loislane > loislane.json
+oc export -o json secret loislane > loislane_secret.json
 ```
 
 * Add a file called "Krypton" (in YAML format) to this repo that contains the resource defintion for a Persistent Volume Claim with the following properties:
@@ -131,7 +131,7 @@ oc export -o json secret loislane > loislane.json
     * Requests 5GB of storage.
     * The volume can be mounted as read-write by more than one node.
 >Answer:
-Please see Krypton.yml in root
+Please see Krypton.yml file in root
 
 
 # General
