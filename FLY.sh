@@ -75,6 +75,6 @@ docker exec -it ALFRED mysql -p -e 'CREATE DATABASE wayneindustries;'
 docker exec -it ALFRED mysql -p -e 'CREATE TABLE fox (ID INT NOT NULL, Name VARCHAR(100));' wayneindustries
 
 #Insert record into table fox
-docker exec -it ALFRED mysql -p -e 'INSERT INTO fox (50, "BATMOBILE");' wayneindustries
+docker exec -it ALFRED mysql -p -e 'INSERT INTO fox VALUES (50, "BATMOBILE");' wayneindustries
 
 ###########################END WAYNEINDUSTRIES DATABASE###############################################
