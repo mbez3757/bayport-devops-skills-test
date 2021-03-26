@@ -6,7 +6,6 @@
 docker_installed=`docker -v`
 
 ###If Docker is not installed, then install latest version.
-docker_installed=`docker -v`
 
 if [ -z "$docker_installed" ];
 then
@@ -50,9 +49,9 @@ sudo systemctl start docker.service
 #Decrypt secret
 db_pw=`gpg --batch --passphrase mypassword --decrypt secret.gpg`
 
-#Build the docker image and run the container in detached mode. 
+#Build the docker image and run the container in detached mode. Expose port 3307 externally.
 docker build -t ALFRED:0.0.1 .
-docker run --name ALFRED  -v /var/lib/mysql:/var/lib/mysql -v /BATCAVE -d  -e MYSQL_ROOT_PASSWORD=$db_pw --rm ALFRED:0.0.1
+docker run --name ALFRED  -v /var/lib/mysql:/var/lib/mysql -v /BATCAVE -d -p 3307:3307  -e MYSQL_ROOT_PASSWORD=$db_pw --rm ALFRED:0.0.1
 
 #Check if the container ALFRED exists. Stop and create the container again
 container_exists=`docker inspect -f '{{.State.Running}}' ALFRED || true`
@@ -62,7 +61,7 @@ then
    docker stop --time=30 ALFRED
    docker kill ALFRED
 
-   docker run --name ALFRED  -v /var/lib/mysql:/var/lib/mysql -v /BATCAVE -d  -e MYSQL_ROOT_PASSWORD=$db_pw --rm ALFRED:0.0.1
+   docker run --name ALFRED  -v /var/lib/mysql:/var/lib/mysql -v /BATCAVE -d -p 3307:3307  -e MYSQL_ROOT_PASSWORD=$db_pw --rm ALFRED:0.0.1
 fi
 ###############################END ALFRED CONTAINER#####################################################
 
@@ -73,9 +72,9 @@ fi
 docker exec -it ALFRED mysql -p -e 'CREATE DATABASE wayneindustries;' 
 
 #Create table fox
-docker exec -it ALFRED mysql -p -e 'CREATE TABLE fox (ID INT NOT NULL AUTO_INCREMENT, Name VARCHAR(100));' wayneindustries
+docker exec -it ALFRED mysql -p -e 'CREATE TABLE fox (ID INT NOT NULL, Name VARCHAR(100));' wayneindustries
 
-#Create table fox
+#Insert record into table fox
 docker exec -it ALFRED mysql -p -e 'INSERT INTO fox (50, "BATMOBILE");' wayneindustries
 
 ###########################END WAYNEINDUSTRIES DATABASE###############################################
